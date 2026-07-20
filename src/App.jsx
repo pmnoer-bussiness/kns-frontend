@@ -55,7 +55,7 @@ function App() {
     setWalletType(null);
   };
 
-  const { registerDomain, redeemDomain, txStatus, errorMessage, resetTx } = useKns(wallet, walletType, network);
+  const { registerDomain, redeemDomain, txStatus, errorMessage, txHash, resetTx } = useKns(wallet, walletType, network);
 
   const handleAction = async (action, domain) => {
     if (!wallet) return setIsWalletModalOpen(true);
@@ -82,9 +82,14 @@ function App() {
       />
 
       <main className="main-content">
-        {activeTab === 'search' && <SearchBox handleAction={handleAction} txStatus={txStatus} errorMessage={errorMessage} resetTx={resetTx} />}
+        {activeTab === 'search' && <SearchBox handleAction={handleAction} txStatus={txStatus} errorMessage={errorMessage} txHash={txHash} network={network} resetTx={resetTx} />}
         {activeTab === 'market' && network === 'testnet' && <Marketplace handleAction={handleAction} txStatus={txStatus} />}
       </main>
+
+      <footer className="app-footer mono">
+        KALE Name Service (KNS) is a decentralized naming system built on Stellar Soroban.<br/>
+        Secure your on-chain identity with .kale, .farm, .fun, .kalien, or custom extensions.
+      </footer>
 
       <WalletModal 
         isOpen={isWalletModalOpen} 

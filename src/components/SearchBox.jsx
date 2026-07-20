@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function SearchBox({ handleAction, txStatus, errorMessage, resetTx }) {
+export default function SearchBox({ handleAction, txStatus, errorMessage, txHash, network, resetTx }) {
   const [query, setQuery] = useState('');
   const [tld, setTld] = useState('.kale');
   const [customExt, setCustomExt] = useState('');
@@ -87,6 +87,18 @@ export default function SearchBox({ handleAction, txStatus, errorMessage, resetT
             {txStatus === 'confirming' && <span className="text-yellow">Confirming on-chain...</span>}
             {txStatus === 'success' && <span className="text-green">Transaction Success!</span>}
             {txStatus === 'error' && <span className="text-red" style={{ wordBreak: 'break-word' }}>{errorMessage}</span>}
+            
+            {txHash && (
+               <div style={{ marginTop: '0.5rem' }}>
+                 <a 
+                   href={`https://stellar.expert/explorer/${network === 'testnet' ? 'testnet' : 'public'}/tx/${txHash}`}
+                   target="_blank" rel="noreferrer"
+                   style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}
+                 >
+                   [ view on stellar.expert ]
+                 </a>
+               </div>
+            )}
           </div>
         )}
       </div>

@@ -373,3 +373,20 @@ body {
   background: var(--accent-color);
   color: #000;
 }
+  
+.app-footer {  
+  position: absolute;  
+  bottom: 2rem;  
+  width: 100%;  
+  text-align: center;  
+  color: rgba(255, 255, 255, 0.15);  
+  font-size: 0.75rem;  
+  padding: 0 2rem;  
+  transition: all 0.4s ease;  
+  cursor: default;  
+  pointer-events: auto;  
+}  
+.app-footer:hover {  
+  color: var(--accent-color);  
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);  
+} 

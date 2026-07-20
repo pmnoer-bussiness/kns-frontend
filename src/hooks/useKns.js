@@ -13,6 +13,7 @@ const FAKE_PUBLICNET_ID = 'CCXFUKZ6D3ZLV6K3U4F5XYH3Y4BZTKTB7FMYI3U5WZVXV7OEZN7V4
 export default function useKns(walletPubKey, walletType, network = 'testnet') {
   const [txStatus, setTxStatus] = useState('idle'); // idle | waiting | confirming | error | success
   const [errorMessage, setErrorMessage] = useState('');
+  const [txHash, setTxHash] = useState('');
 
   const RPC_URL = network === 'testnet' ? TESTNET_RPC_URL : PUBLICNET_RPC_URL;
   const rpcServer = new rpc.Server(RPC_URL);
@@ -23,6 +24,7 @@ export default function useKns(walletPubKey, walletType, network = 'testnet') {
   const resetTx = () => {
     setTxStatus('idle');
     setErrorMessage('');
+    setTxHash('');
   };
 
   const getClient = () => {
@@ -80,8 +82,13 @@ export default function useKns(walletPubKey, walletType, network = 'testnet') {
       const signedTx = TransactionBuilder.fromXDR(actualXdr, getNetworkPassphrase());
       const sendRes = await rpcServer.sendTransaction(signedTx);
       
+      if (sendRes.hash) {
+        setTxHash(sendRes.hash);
+      }
+      
       if (sendRes.status === "ERROR") {
-        throw new Error("RPC Broadcast Error: " + (sendRes.errorResultXdr || JSON.stringify(sendRes)));
+        const errorMsg = "RPC Broadcast Error: " + (sendRes.errorResultXdr || JSON.stringify(sendRes));
+        throw new Error(errorMsg);
       }
       
       let status = "PENDING";
@@ -159,5 +166,5 @@ export default function useKns(walletPubKey, walletType, network = 'testnet') {
     }
   };
 
-  return { registerDomain, redeemDomain, txStatus, errorMessage, resetTx };
+  return { registerDomain, redeemDomain, txStatus, errorMessage, txHash, resetTx };
 }
