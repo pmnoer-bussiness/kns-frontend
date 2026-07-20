@@ -311,11 +311,6 @@ body {
   margin-top: 1.5rem;
 }
 
-.search-hint span {
-  color: var(--accent-color);
-  cursor: pointer;
-}
-
 /* Marketplace List */
 .marketplace-container {
   width: 100%;

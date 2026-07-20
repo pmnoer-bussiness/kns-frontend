@@ -85,19 +85,30 @@ export default function SearchBox({ handleAction, txStatus, errorMessage, txHash
           <div style={{ fontSize: '0.9rem' }}>
             {txStatus === 'waiting' && <span className="text-yellow">Waiting for wallet signature...</span>}
             {txStatus === 'confirming' && <span className="text-yellow">Confirming on-chain...</span>}
-            {txStatus === 'success' && <span className="text-green">Transaction Success!</span>}
-            {txStatus === 'error' && <span className="text-red" style={{ wordBreak: 'break-word' }}>{errorMessage}</span>}
+            {txStatus === 'success' && (
+              <a 
+                href={txHash ? `https://stellar.expert/explorer/${network === 'testnet' ? 'testnet' : 'public'}/tx/${txHash}` : '#'}
+                target={txHash ? "_blank" : undefined} rel="noreferrer"
+                className="text-green"
+                style={{ textDecoration: txHash ? 'underline' : 'none' }}
+              >
+                Transaction Success! {txHash ? '(View Tx)' : ''}
+              </a>
+            )}
             
-            {txHash && (
-               <div style={{ marginTop: '0.5rem' }}>
-                 <a 
-                   href={`https://stellar.expert/explorer/${network === 'testnet' ? 'testnet' : 'public'}/tx/${txHash}`}
-                   target="_blank" rel="noreferrer"
-                   style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}
-                 >
-                   [ view on stellar.expert ]
-                 </a>
-               </div>
+            {txStatus === 'error' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                <span className="text-red" style={{ wordBreak: 'break-word' }}>{errorMessage}</span>
+                {txHash && (
+                  <a 
+                    href={`https://stellar.expert/explorer/${network === 'testnet' ? 'testnet' : 'public'}/tx/${txHash}`}
+                    target="_blank" rel="noreferrer"
+                    style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}
+                  >
+                    [ view on stellar.expert ]
+                  </a>
+                )}
+              </div>
             )}
           </div>
         )}
